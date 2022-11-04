@@ -114,6 +114,13 @@ KEY: PORT
 VALUE: 8000
 ```
 
+For now we will also add this:
+```
+KEY: DISABLE_COLLECTSTATIC
+VALUE: 1
+```
+This is because we don't have any **HTML** connected yet. So this will be take away when we are building up the views.
+
 ## Setup the settings.py file
 Navigate to the **settings.py** file within the **daytasker** folder.
 Write this code:
@@ -211,3 +218,15 @@ Write this code within that file:
 web: gunicorn daytasker.wsgi
 ```
 *(daytasker is the projectname)*
+
+# Back to Heroku
+- Navigate back to **Heroku** to the **Deploy** tab
+- Deployment method -> **GitHub - Connect to GitHub**
+- Select your repository -> Search for your **repo-name** which in this case is **daytasker**
+- Press on the button **Connect**
+- Go down and press on **Deploy Branch**
+
+After that is complete, if you followed the steps you should see this beautiful message!
+```
+Your app was successfully deployed.
+```
