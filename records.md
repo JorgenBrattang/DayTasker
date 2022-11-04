@@ -108,6 +108,12 @@ KEY: SECRET_KEY
 VALUE: superScretKey!!
 ```
 
+Also add to the **Config Vars**:
+```
+KEY: PORT
+VALUE: 8000
+```
+
 ## Setup the settings.py file
 Navigate to the **settings.py** file within the **daytasker** folder.
 Write this code:
@@ -142,3 +148,66 @@ Now lets run the migrate command again, to implement the changes we made:
 ```
 python3 manage.py migrate
 ```
+
+## Static and templates
+Lets add some line of code for the static folder
+```python
+STATIC_URL = '/static/'
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+```
+
+Now lets create a TEMPLATES_DIR for our templates:
+```python
+# Build paths inside the project like this: BASE_DIR / 'subdir'.
+BASE_DIR = Path(__file__).resolve().parent.parent
+TEMPLATES_DIR = os.path.join(BASE_DIR, 'templates')
+```
+
+Change the **DIRS** to **[TEMPLATES_DIR]**
+
+```python
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [TEMPLATES_DIR], # This one was empty before
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                'django.template.context_processors.debug',
+                'django.template.context_processors.request',
+                'django.contrib.auth.context_processors.auth',
+                'django.contrib.messages.context_processors.messages',
+            ],
+        },
+    },
+]
+```
+
+Now lets add **ALLOWED_HOSTS**
+```python
+ALLOWED_HOSTS = ['daytasker.herokuapp.com', 'localhost']
+```
+
+## Now for the folders and some files that we need later on.
+- First create a called **templates** in the outer location so not inside **daytasker** or **main** folder. *(spelling here is crucial)*. 
+- Create a new folder called **main**.
+- In there create two files:
+    - **base.html**
+    - **home.html**
+- Also create a **static** folder at the same place as **templates** *(again, spelling is cruicial)*
+
+## The Procfile for Heroku
+Create a new file called **Procfile**, where the file **manage.py** is.
+You can use this in the terminal
+```
+touch Procfile
+```
+And that will create a Procfile for you.
+
+We need this file to run our project.
+Write this code within that file:
+```
+web: gunicorn daytasker.wsgi
+```
+*(daytasker is the projectname)*
