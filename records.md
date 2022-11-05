@@ -395,7 +395,7 @@ Navigate to **templates -> base.html**:
                     </li>
                     {% else %}
                     <li class="nav-item">
-                        <a class="nav-link" href="accounts/sign-up">Register</a>
+                        <a class="nav-link" href="accounts/signup">Register</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="accounts/login">Login</a>
