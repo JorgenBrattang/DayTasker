@@ -40,7 +40,7 @@ python3 manage.py startapp main
 pip3 freeze --local > requirements.txt
 ```
 
-## Now to install our app to the project
+## Now to install our apps to the project
 Within the folder **daytasker** (project) in the **settings.py** add your app.
 ```python
 INSTALLED_APPS = [
@@ -50,7 +50,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'main',  # <<<---- Add your app here >>>
+    'main.apps.MainConfig',  # <<<---- your main app >>>
+    'crispy_forms',  # <<<---- Crispy_forms (for later use) >>>
+    'crispy_bootstrap5'  # <<<---- And Crispy bootstrap >>>
 ]
 ```
 
@@ -307,7 +309,9 @@ INSTALLED_APPS = [
     'allauth.account',  # <<< --- And that >>>
     'allauth.socialaccount',  # <<< --- And finally this one >>>
     'django.contrib.staticfiles',
-    'main',
+    'main.apps.MainConfig',
+    'crispy_forms',
+    'crispy_bootstrap5'
 ]
 ```
 
@@ -325,3 +329,112 @@ Now to implement this, we need to **migrate**:
 ```
 python3 manage.py migrate
 ```
+
+# Now lets make so we can view it all
+Start with going to **daytasker -> urls.py**
+```python
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('accounts/', include('allauth.urls')),
+    path('', include('main.urls')),  # <<< --- Add this >>>
+]
+```
+
+Create a new file in **main** called **urls.py**
+```python
+from django.urls import path
+from . import views
+
+urlpatterns = [
+    path('', views.home, name='home')
+]
+```
+
+Now navigate to **views.py** within the **main** folder:
+```python
+from django.shortcuts import render
+
+
+def home(request):
+    return render(request, 'home.html')
+```
+
+# Add the HTML thats needed
+Navigate to **templates -> base.html**:
+```html
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+    <title>{% block title %}{% endblock %}</title>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <div>
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/home">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/create-task">Task</a>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <ul class="navbar-nav">
+                    {% if user.is_authenticated %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="accounts/logout">Logout</a>
+                    </li>
+                    {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="accounts/sign-up">Register</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="accounts/login">Login</a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="container">
+        {% block content %}
+        {% endblock %}
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous">
+    </script>
+</body>
+</html>
+```
+
+And now to **home.html**
+```html
+{% extends 'base.html' %}
+{% block title %}Home page{% endblock %}
+{% block content %}
+<h1>Home page</h1>
+{% endblock %}
+```
+
+For the test go start the server if you don't have it running:
+```
+python3 manage.py runserver
+```
+
+Test the these links if they work:
+```
+Register
+Login
+Logout
+```
+If it all works, then great! Otherwise go back and check where you might have gone wrong.
