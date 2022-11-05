@@ -230,3 +230,98 @@ After that is complete, if you followed the steps you should see this beautiful 
 ```
 Your app was successfully deployed.
 ```
+
+# Admin creation
+First we need to create a superuser for our project:
+```
+python3 manage.py createsuperuser
+```
+
+Here you are promted to add a username:
+```
+Username (leave blank to use 'gitpod'): 
+```
+
+So Im just going to use **admin**
+
+Next is an email adress:
+```
+Email Adress:
+```
+
+Then a password, which you can't see as your writing it:
+```
+Password: 
+```
+```
+Password (again): 
+```
+```
+Superuser created successfully.
+```
+
+To access the **admin page** open up the server:
+```
+python3 manage.py runserver
+```
+
+And put this at the end of the **URL**
+```
+/admin
+
+example: https://...gitpod.io/admin
+```
+
+Now lets add more functionality to our registration by installing **django-allauth**
+<a>https://django-allauth.readthedocs.io/en/latest/</a>
+
+```
+pip3 install django-allauth
+```
+
+Onces installed, freeze the requirements too:
+```
+pip3 freeze --local > requirements.txt
+```
+
+Now navigate to **daytasker -> urls.py**:
+```python
+from django.urls import path, include  # <<< --- Add include here >>>
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('accounts/', include('allauth.urls')),  # <<< --- And add this>>>
+]
+```
+
+Then we need to add it to our **settings.py** file:
+```python
+INSTALLED_APPS = [
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.sites',  # <<< --- This >>>
+    'allauth',  # <<< --- And this >>>
+    'allauth.account',  # <<< --- And that >>>
+    'allauth.socialaccount',  # <<< --- And finally this one >>>
+    'django.contrib.staticfiles',
+    'main',
+]
+```
+
+Also we need this to make it work, and this will go under **INSTALLED_APPS**:
+```python
+SITE_ID = 1  # <<< --- You need to add this for Django, it likes it. >>>
+
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/'
+
+ACCOUNT_EMAIL_VERIFICATION = 'none'  # <<< --- This one is for so you don't need email to create an account >>>
+```
+
+Now to implement this, we need to **migrate**:
+```
+python3 manage.py migrate
+```

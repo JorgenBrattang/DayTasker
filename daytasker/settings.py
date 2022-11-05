@@ -35,9 +35,22 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+    'django.contrib.sites',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
     'django.contrib.staticfiles',
-    'main',
+    'main.apps.MainConfig',
+    'crispy-forms',
+    'crispy-bootstrap5',
 ]
+
+SITE_ID = 1  # <<< --- You need to add this for Django, it likes it. >>>
+
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/'
+
+ACCOUNT_EMAIL_VERIFICATION = 'none'  # <<< --- This one is for so you don't need email to create an account >>>
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
