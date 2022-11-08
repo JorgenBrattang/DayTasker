@@ -50,7 +50,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'main.apps.MainConfig',  # <<<---- your main app >>>
+    'main',  # <<<---- your main app >>>
     'crispy_forms',  # <<<---- Crispy_forms (for later use) >>>
     'crispy_bootstrap5'  # <<<---- And Crispy bootstrap >>>
 ]
@@ -309,7 +309,7 @@ INSTALLED_APPS = [
     'allauth.account',  # <<< --- And that >>>
     'allauth.socialaccount',  # <<< --- And finally this one >>>
     'django.contrib.staticfiles',
-    'main.apps.MainConfig',
+    'main',
     'crispy_forms',
     'crispy_bootstrap5'
 ]
@@ -333,20 +333,14 @@ python3 manage.py migrate
 # Now lets make so we can view it all
 Start with going to **daytasker -> urls.py**
 ```python
+from django.contrib import admin
+from django.urls import path, include
+from main import views  # <<< --- Add this >>>
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include('allauth.urls')),
-    path('', include('main.urls')),  # <<< --- Add this >>>
-]
-```
-
-Create a new file in **main** called **urls.py**
-```python
-from django.urls import path
-from . import views
-
-urlpatterns = [
-    path('', views.home, name='home')
+    path('', views.home, name='home'),  # <<< --- Add this >>>
 ]
 ```
 
@@ -474,3 +468,31 @@ Change it to our **base.html**:
 ```
 
 Now as you open your server you can see how it changed to a much better view. We will modify these later, but for now leave it.
+
+# To do application
+First lets create the new application:
+```
+python manage.py startapp tasks
+```
+
+This will create a new app, which you need to tell the project to include.<br>
+Navigate to **daytasker -> settings.py**:
+```python
+INSTALLED_APPS = [
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.sites',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'django.contrib.staticfiles',
+    'main',
+    'crispy_forms',
+    'crispy_bootstrap5',
+    'tasks'  # <<< --- Add this now >>>
+]
+```
+

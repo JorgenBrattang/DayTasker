@@ -40,9 +40,10 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'django.contrib.staticfiles',
-    'main.apps.MainConfig',
+    'main',
     'crispy_forms',
-    'crispy_bootstrap5'
+    'crispy_bootstrap5',
+    'tasks',
 ]
 
 SITE_ID = 1  # <<< --- You need to add this for Django, it likes it. >>>
