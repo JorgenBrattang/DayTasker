@@ -3,6 +3,10 @@
 {% block content %}
     <h1>Tasks List</h1>
     {% for task in tasks %}
-        <p>{{ task.name }} is {{ task.done }}</p>
+    {% if task.done %}
+        <p>{{ task.name }} is done</p>
+    {% else %}
+        <p>{{ task.name }} must be completed</p>
+    {% endif %}
     {% endfor %}
 {% endblock %}

@@ -548,6 +548,25 @@ python3 manage.py runserver
 
 And add the **/admin** behind the URL, and there you can now see the **Tasks**
 
+For now we will create two tasks from the **/admin** panel:
+```
+1. Click on the +Add at the Tasks category
+2. Write a name of the task: Im not done
+3. Leave the checkbox empty
+4. Click on SAVE
+```
+
+Repeat:
+```
+1. Click on the +Add at the Tasks category
+2. Write a name of the task: Im done
+3. Check the checkbox
+4. Click on SAVE
+```
+
+Now we got two tasks, one done, and one is not.
+
+
 # View the task in our website
 Navigate to **views.py** within the **tasks** folder:
 
@@ -573,4 +592,20 @@ This will allow us to render out this in our **html** now, so navigate to **temp
 {% endblock %}
 ```
 
-This is just a test to see how that it is now working, we will get back to it later.
+This is just a test to see how that it is now working, we will add complexity and more to it as we go on.
+
+Now lets test out a if statement:
+```html
+{% block content %}
+    <h1>Tasks List</h1>
+    {% for task in tasks %}
+    {% if task.done %}
+        <p>{{ task.name }} is done</p>
+    {% else %}
+        <p>{{ task.name }} must be completed</p>
+    {% endif %}
+    {% endfor %}
+{% endblock %}
+```
+
+Now we can see our custom view of which task is done, and which is not.
