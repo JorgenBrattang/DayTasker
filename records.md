@@ -599,13 +599,87 @@ Now lets test out a if statement:
 {% block content %}
     <h1>Tasks List</h1>
     {% for task in tasks %}
-    {% if task.done %}
-        <p>{{ task.name }} is done</p>
-    {% else %}
-        <p>{{ task.name }} must be completed</p>
-    {% endif %}
+        {% if task.done %}
+            <p>{{ task.name }} is done</p>
+        {% else %}
+            <p>{{ task.name }} must be completed</p>
+        {% endif %}
     {% endfor %}
 {% endblock %}
 ```
 
 Now we can see our custom view of which task is done, and which is not.
+
+Now lets add if you have nothing to do, the tasks list is empty *(first you need to delete them in the admin panel)*
+```
+    {% endfor%}
+{% empty %}
+    <p>Create more tasks, cause you got nothing to do!</p>
+{% endfor %}
+```
+
+# Create a new task
+To let the user create a new task, lets start with adding a link to **tasks_list.html**:<br>
+```html
+{% endfor %}
+<a href="{% url 'add_task' %}">Add Task</a>
+{% endblock %}
+```
+
+Navigate to **views.py** within the **tasks** folder and add this:
+```python
+from django.shortcuts import render, redirect  # <<< --- Import redirect >>>
+
+def add_task(request):
+    if request.method == 'POST':
+        name = request.POST.get('task_name')
+        done = 'done' in request.POST
+        Task.objects.create(name=name, done=done)
+        return redirect('get_tasks_list')
+    return render(request, 'tasks/add_task.html')
+```
+
+Now to **daytasker -> urls.py**:
+```python
+from django.contrib import admin
+from django.urls import path, include
+from tasks.views import get_tasks_list, add_task  # <<< --- Add add_task >>>
+from main import views
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('accounts/', include('allauth.urls')),
+    path('', views.home, name='home'),
+    path('tasks/', get_tasks_list, name='get_tasks_list'),
+    path('add/', add_task, name='add_task')  # <<< --- Add this >>>
+]
+```
+
+Now create a new html file within the **templates -> tasks** folder called **add_task.html**:
+```html
+{% extends 'base.html' %}
+{% block title %}Task List{% endblock %}
+{% block content %}
+<h1>Add item</h1>
+<form method="POST">
+    {% csrf_token %}  <!-- This token is really important to have! --->
+    <div>
+        <p>
+            <label for="id_name">Name: </label>
+            <input type="text" id="id_name" name="task_name">
+        </p>
+    </div>
+    <div>
+        <p>
+            <label for="id_done">Done: </label>
+            <input type="checkbox" id="id_done" name="done">
+        </p>
+    </div>
+    <div>
+        <p>
+            <button type="submit">Add task</button>
+        </p>
+    </div>
+</form>
+{% endblock %}
+```

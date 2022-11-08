@@ -8,5 +8,8 @@
     {% else %}
         <p>{{ task.name }} must be completed</p>
     {% endif %}
+    {% empty %}
+    <p>Create more tasks, cause you got nothing to do!</p>
     {% endfor %}
+    <a href="{% url 'add_task' %}">Add Task</a>
 {% endblock %}
