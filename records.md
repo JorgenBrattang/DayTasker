@@ -391,14 +391,14 @@ Navigate to **templates -> base.html**:
                 <ul class="navbar-nav">
                     {% if user.is_authenticated %}
                     <li class="nav-item">
-                        <a class="nav-link" href="accounts/logout">Logout</a>
+                        <a class="nav-link" href="{% url 'account_logout' %}">Logout</a>
                     </li>
                     {% else %}
                     <li class="nav-item">
-                        <a class="nav-link" href="accounts/signup">Register</a>
+                        <a class="nav-link" href="{% url 'account_signup' %}">Register</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="accounts/login">Login</a>
+                        <a class="nav-link" href="{% url 'account_login' %}">Login</a>
                     </li>
                     {% endif %}
                 </ul>
@@ -438,3 +438,39 @@ Login
 Logout
 ```
 If it all works, then great! Otherwise go back and check where you might have gone wrong.
+
+# Modify the login, register and logout page
+First we need to check the python version:
+```
+ls ../.pip-modules/lib
+```
+
+My version is:
+```
+python3.8
+```
+
+Now to modify the pages, we need to copy them into our project:<br>
+*(If your python is different, just change where I wrote it to your version. Rest will be the same)*
+```
+cp -r ../.pip-modules/lib/python3.8/site-packages/allauth/templates/* ./templates
+```
+
+Now you will see more folders within the **templates** folder, navigate to **account** folder and change the following:
+```
+login.html
+logout.html
+signup.html
+```
+
+On the toprow on all three is this code:
+```python
+{% extends "account/base.html" %}
+```
+
+Change it to our **base.html**:
+```python
+{% extends "base.html" %}
+```
+
+Now as you open your server you can see how it changed to a much better view. We will modify these later, but for now leave it.
