@@ -496,3 +496,81 @@ INSTALLED_APPS = [
 ]
 ```
 
+# Now lets make a basic task manager
+Navigate to the folder **tasks -> models.py**
+```python
+from django.db import models
+
+
+class Task(models.Model):
+    name = models.CharField(max_length=50, null=False, blank=False)
+    done = models.BooleanField(null=False, blank=False, default=False)
+
+    
+    def __str__(self):  # <<< --- This will override the __str__ method so we can view the name >>>
+        return self.name
+```
+
+And now we need to migrate this to the database to make it official.<br>
+First lets do a dry run to make sure we don't mess things up:
+```
+python3 manage.py makemigrations --dry-run
+```
+Output
+```
+Migrations for 'tasks':
+  tasks/migrations/0001_initial.py
+    - Create model Task
+```
+
+Everything looks okey, lets run it without the dry run
+```
+python3 manage.py makemigrations
+```
+
+Now we can run our migration:
+```
+python3 manage.py migrate
+```
+
+To make it showup in the admin panel, navigate to **admin.py** within the **tasks** folder:
+```python
+from django.contrib import admin
+from .models import Task  # <<< --- Add this >>>
+
+admin.site.register(Task)  # <<< --- And this >>>
+```
+
+Lets now test it:
+```
+python3 manage.py runserver
+```
+
+And add the **/admin** behind the URL, and there you can now see the **Tasks**
+
+# View the task in our website
+Navigate to **views.py** within the **tasks** folder:
+
+```python
+def get_tasks_list(request):
+    tasks = Task.objects.all()
+    context = {
+        'tasks': tasks
+    }
+    return render(request, 'tasks/tasks_list.html', context)
+```
+
+This will allow us to render out this in our **html** now, so navigate to **templates -> tasks -> tasks_list.html**:
+
+```html
+{% extends 'base.html' %}
+{% block title %}Task List{% endblock %}
+{% block content %}
+    <h1>Tasks List</h1>
+    {% for task in tasks %}
+        <p>{{ task.name }} is {{ task.done }}</p>
+    {% endfor %}
+{% endblock %}
+```
+
+This is just a test to see how that it is now working, we will get back to it later.
