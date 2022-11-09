@@ -10,10 +10,10 @@ def get_tasks_list(request):
     return render(request, 'tasks/tasks_list.html', context)
 
 
-def add_task(request):
+def add_task_form(request):
     if request.method == 'POST':
         name = request.POST.get('task_name')
         done = 'done' in request.POST
         Task.objects.create(name=name, done=done)
         return redirect('get_tasks_list')
-    return render(request, 'tasks/add_task.html')
+    return render(request, 'tasks/add_task_form.html')
