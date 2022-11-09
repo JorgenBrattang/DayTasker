@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from .models import Task
+from .forms import AddTask
 
 
 def get_tasks_list(request):
@@ -11,9 +12,8 @@ def get_tasks_list(request):
 
 
 def add_task_form(request):
-    if request.method == 'POST':
-        name = request.POST.get('task_name')
-        done = 'done' in request.POST
-        Task.objects.create(name=name, done=done)
-        return redirect('get_tasks_list')
-    return render(request, 'tasks/add_task_form.html')
+    form = AddTask()
+    context = {
+        'form': form
+    }
+    return render(request, 'tasks/add_task_form.html', context)
