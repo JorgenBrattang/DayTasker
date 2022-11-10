@@ -1,22 +1,29 @@
 {% extends 'base.html' %}
 {% block title %}Task List{% endblock %}
 {% block content %}
-    <table class="table table-borderless">
-        <thead class="border-bottom font-weight-bold">
-            <tr>
-                <td>Task</td>
-                <td>Done status</td>
-            </tr>
-        </thead>
-        <tbody>
-            {% for task in tasks %}
-            <tr>
-                <td>{{ task.name }}</td>
-                <td>{% if task.done %}Done{% else %}Not Done{% endif %}</td>
-                <td><a href="{% url 'task_update' task.id %}" class="btn btn-primary">Edit task</a></td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-    <a href="{% url 'add_task_form' %}" class="btn btn-success">Add task</a>
+<table class="table table-borderless">
+    <thead class="border-bottom font-weight-bold">
+        <tr>
+            <td>Task</td>
+            <td>Done status</td>
+        </tr>
+    </thead>
+    <tbody>
+        {% for task in tasks %}
+        <tr>
+            <td>{{ task.name }}</td>
+            <td>{% if task.done %}Done{% else %}Not Done{% endif %}</td>
+            <td>
+                <a href="{% url 'toggle_task' task.id %}" class="btn btn-primary">Toggle Done status</a>
+                <a href="{% url 'edit_task' task.id %}" class="btn btn-primary">Edit task</a>
+                <form action="{% url 'delete_task' task.id %}" method="post" class="d-inline">
+                    {% csrf_token %}
+                    <button class="btn btn-danger">Delete</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<a href="{% url 'add_task_form' %}" class="btn btn-success">Add task</a>
 {% endblock %}
