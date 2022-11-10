@@ -6,4 +6,5 @@ class AddTask(forms.ModelForm):
 
     class Meta:
         model = Task
-        fields = '__all__'
+        # fields = '__all__'  <<< --- This will show in the order of creation
+        fields = ('name', 'done')
