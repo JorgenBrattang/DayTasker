@@ -1,4 +1,3 @@
-from django import forms
 from django.shortcuts import render, redirect
 from .models import Task
 from .forms import AddTask
@@ -12,14 +11,22 @@ def get_tasks_list(request):
     return render(request, 'tasks/tasks_list.html', context)
 
 
-def add_task_form(request):
+def add_task_form(request, id=0):
     if request.method == 'POST':
-        form = AddTask(request.POST)
+        if id == 0:
+            form = AddTask(request.POST)
+        else:
+            task = Task.objects.get(pk=id)
+            form = AddTask(request.POST, instance=task)
         if form.is_valid():
             form.save()
-            return redirect('/tasks/')
-    else:
-        form = AddTask()
+        return redirect('/tasks/')
+    else:  # request.method == 'GET' <<< --- Reminder --- >>>
+        if id == 0:
+            form = AddTask()
+        else:
+            task = Task.objects.get(pk=id)  # pk = primary key
+            form = AddTask(instance=task)
         context = {
             'form': form
         }

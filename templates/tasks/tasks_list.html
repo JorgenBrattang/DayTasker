@@ -1,15 +1,22 @@
 {% extends 'base.html' %}
 {% block title %}Task List{% endblock %}
 {% block content %}
-    <h1>Tasks List</h1>
-    {% for task in tasks %}
-    {% if task.done %}
-        <p>{{ task.name }} is done</p>
-    {% else %}
-        <p>{{ task.name }} must be completed</p>
-    {% endif %}
-    {% empty %}
-    <p>Create more tasks, cause you got nothing to do!</p>
-    {% endfor %}
-    <a href="{% url 'add_task_form' %}">Add Task</a>
+    <table class="table table-borderless">
+        <thead class="border-bottom font-weight-bold">
+            <tr>
+                <td>Task</td>
+                <td>Done status</td>
+            </tr>
+        </thead>
+        <tbody>
+            {% for task in tasks %}
+            <tr>
+                <td>{{ task.name }}</td>
+                <td>{% if task.done %}Done{% else %}Not Done{% endif %}</td>
+                <td><a href="{% url 'task_update' task.id %}" class="btn btn-primary">Edit task</a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <a href="{% url 'add_task_form' %}" class="btn btn-success">Add task</a>
 {% endblock %}
