@@ -6,14 +6,17 @@
         <tr>
             <td>Task</td>
             <td>Done status</td>
+            <td>Date</td>
+            <td>Time</td>
         </tr>
     </thead>
     <tbody>
         {% for task in tasks %}
         <tr>
             <td>{{ task.name }}</td>
-            <td>{{ task.get_status_display }}
-            </td>
+            <td>{{ task.get_status_display }}</td>
+            <td>{{ task.date|date:"D - M d, Y" }}</td>
+            <td>{{ task.date|date:"H:i" }}</td>
             <td>
                 <a href="{% url 'edit_task' task.id %}" class="btn btn-primary">Edit task</a>
                 <form action="{% url 'delete_task' task.id %}" method="post" class="d-inline">

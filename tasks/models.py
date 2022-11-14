@@ -1,4 +1,5 @@
 from django.db import models
+import datetime
 
 
 class Task(models.Model):
@@ -10,6 +11,7 @@ class Task(models.Model):
     )
     status = models.CharField(
         max_length=50, default='not_done', choices=status_choice)
+    date = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return self.name
