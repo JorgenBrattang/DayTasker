@@ -9,7 +9,8 @@ class AddTask(forms.ModelForm):
         fields = ('__all__')
         labels = {
             'name': 'What do you want to add? ',
-            'status': 'What is the status of the task?'
+            'status': 'What is the status of the task?',
+            'estimated': 'Estimated time to complete? (optional)'
         }
 
     def __init__(self, *args, **kwargs):

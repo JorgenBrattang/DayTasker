@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect
+from django.db.models.signals import pre_save, post_save
 from .models import Task
 from .forms import AddTask
 
@@ -17,6 +18,7 @@ def add_task_form(request, id=0):
             form = AddTask(request.POST)
         else:
             task = Task.objects.get(pk=id)
+            task.estimated = 5
             form = AddTask(request.POST, instance=task)
         if form.is_valid():
             form.save()
