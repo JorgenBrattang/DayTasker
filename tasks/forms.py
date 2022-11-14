@@ -6,11 +6,10 @@ class AddTask(forms.ModelForm):
 
     class Meta:
         model = Task
-        # fields = '__all__'  <<< --- This will show in the order of creation
-        fields = ('name', 'done')
+        fields = ('__all__')
         labels = {
             'name': 'What do you want to add? ',
-            'done': 'Is the task done already? '
+            'status': 'What is the status of the task?'
         }
 
     def __init__(self, *args, **kwargs):

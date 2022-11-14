@@ -21,7 +21,7 @@ def add_task_form(request, id=0):
         if form.is_valid():
             form.save()
         return redirect('/tasks/')
-    else:  # request.method == 'GET' <<< --- Reminder --- >>>
+    else:
         if id == 0:
             form = AddTask()
         else:
@@ -33,11 +33,11 @@ def add_task_form(request, id=0):
         return render(request, 'tasks/add_task_form.html', context)
 
 
-def toggle_task(request, id):
-    task = Task.objects.get(pk=id)
-    task.done = not task.done
-    task.save()
-    return redirect('/tasks/')
+# def toggle_task(request, id):
+#     task = Task.objects.get(pk=id)
+#     task.done = not task.done
+#     task.save()
+#     return redirect('/tasks/')
 
 
 def delete_task(request, id):

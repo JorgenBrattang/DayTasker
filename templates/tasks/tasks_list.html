@@ -12,9 +12,9 @@
         {% for task in tasks %}
         <tr>
             <td>{{ task.name }}</td>
-            <td>{% if task.done %}Done{% else %}Not Done{% endif %}</td>
+            <td>{{ task.get_status_display }}
+            </td>
             <td>
-                <a href="{% url 'toggle_task' task.id %}" class="btn btn-primary">Toggle Done status</a>
                 <a href="{% url 'edit_task' task.id %}" class="btn btn-primary">Edit task</a>
                 <form action="{% url 'delete_task' task.id %}" method="post" class="d-inline">
                     {% csrf_token %}
