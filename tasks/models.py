@@ -17,11 +17,13 @@ class Task(models.Model):
     def __str__(self):
         return self.name
 
-    def save(self, force_insert=False, force_update=False):
-        print('save')
-        task = Task.objects.get(pk=self.id)
-        old_estimated_value = task.estimated
-        new_estimated_value = self.estimated
-        estimated = (old_estimated_value + new_estimated_value) / 2
-        self.estimated = estimated
+    def save(self, force_insert=False, force_update=False, id=0):
+        if self.id is not None:
+            get_task = Task.objects.get(pk=self.id)
+            old_estimated_value = get_task.estimated
+            if old_estimated_value is not None:
+                new_estimated_value = self.estimated
+                print(old_estimated_value, new_estimated_value)
+                estimated = (old_estimated_value + new_estimated_value) / 2
+                self.estimated = estimated
         super(Task, self).save(force_insert, force_update)
