@@ -683,3 +683,19 @@ Now create a new html file within the **templates -> tasks** folder called **add
 </form>
 {% endblock %}
 ```
+
+
+
+
+
+
+
+# DEBUG enviroment
+```
+I will say that the setup is a little annoying, because you need to have DEBUG True in your Gitpod workspace, and False in your Heroku workspace.
+The way around this is to use an environment variable to make this dynamic:
+DEBUG = 'DEVELOPMENT' in os.environ
+Then:
+add `os.environ['DEVELOPMENT'] = 'Yes!!'
+only add 'DEVELOPMENT' to Heroku if you want DEBUG to be enabled
+```

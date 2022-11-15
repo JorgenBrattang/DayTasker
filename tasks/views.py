@@ -33,13 +33,6 @@ def add_task_form(request, id=0):
         return render(request, 'tasks/add_task_form.html', context)
 
 
-# def toggle_task(request, id):
-#     task = Task.objects.get(pk=id)
-#     task.done = not task.done
-#     task.save()
-#     return redirect('/tasks/')
-
-
 def delete_task(request, id):
     task = Task.objects.get(pk=id)
     task.delete()
