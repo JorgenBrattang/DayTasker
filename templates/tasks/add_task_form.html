@@ -2,7 +2,7 @@
 {% load crispy_forms_tags %}
 {% block title %}Task List{% endblock %}
 {% block content %}
-<h1>Add task</h1>
+<h1>Add / Edit task</h1>
 <form action="" method="POST" autocomplete="off">
     {% csrf_token %}
     {{ form|crispy }}

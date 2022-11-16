@@ -3,10 +3,9 @@ from .models import Task
 
 
 class AddTask(forms.ModelForm):
-
     class Meta:
         model = Task
-        fields = ('name', 'status', 'estimated', 'repeat_task',)
+        fields = ('name', 'status', 'estimated',)
         labels = {
             'name': 'What do you want to add? ',
             'status': 'What is the status of the task?',

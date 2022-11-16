@@ -14,7 +14,6 @@ class Task(models.Model):
     date = models.DateTimeField(auto_now=True)
     estimated = models.PositiveIntegerField(null=True, blank=True)
     last_done = models.DateField(null=True, blank=True)
-    repeat_task = models.PositiveIntegerField(null=True, blank=True)
 
     def __str__(self):
         return self.name
@@ -23,8 +22,6 @@ class Task(models.Model):
         if self.id is not None:
             get_task = Task.objects.get(pk=self.id)
             old_estimated_value = get_task.estimated
-            if self.status == 'done':
-                self.last_done = self.date + timedelta(days=self.repeat_task)
             print(self.last_done)
             print(date.today())
             if self.last_done == date.today():
