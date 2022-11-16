@@ -6,11 +6,11 @@ class AddTask(forms.ModelForm):
 
     class Meta:
         model = Task
-        fields = ('__all__')
+        fields = ('name', 'status', 'estimated', 'repeat_task',)
         labels = {
             'name': 'What do you want to add? ',
             'status': 'What is the status of the task?',
-            'estimated': 'Estimated time to complete? (optional)'
+            'estimated': 'Estimated time to complete? (optional)',
         }
 
     def __init__(self, *args, **kwargs):

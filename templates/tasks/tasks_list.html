@@ -6,8 +6,9 @@
         <tr>
             <td>Task</td>
             <td>Done status</td>
-            <td>Last time completed</td>
+            <td>Last visit</td>
             <td>Time</td>
+            <td>Last completed</td>
             <td>Estimated time to complete</td>
         </tr>
     </thead>
@@ -18,7 +19,8 @@
             <td>{{ task.get_status_display }}</td>
             <td>{{ task.date|date:"D - M d, Y" }}</td>
             <td>{{ task.date|date:"H:i" }}</td>
-            <td>{{ task.estimated }}</td>
+            <td>{{ task.last_done|date:"D - M d, Y" }}</td>
+            <td>{{ task.estimated}}</td>
             <td>
                 <a href="{% url 'edit_task' task.id %}" class="btn btn-primary">Edit task</a>
                 <form action="{% url 'delete_task' task.id %}" method="post" class="d-inline">
